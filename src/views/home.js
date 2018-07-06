@@ -2,6 +2,8 @@
 import { mapState } from 'vuex'
 import Board from '@/components/Board'
 import Dialog from '@/components/Dialog'
+import BigText from '@/components/BigText'
+
 import {
   ADD_CHESSMAN,
   SET_STATUS,
@@ -19,8 +21,10 @@ export default {
   name: 'home',
   data () {
     return {
+      bigText: '',
       score: 0,
-      step: -1
+      step: -1,
+      startTime: + new Date()
     }
   },
   created () {
@@ -35,17 +39,20 @@ export default {
 
       if (score >= SCORE.FIVE/2 && step === 1) {
         this.$store.dispatch(SET_FIVES, win(this.board))
-        this.end()
+        this.$store.dispatch(SET_STATUS, STATUS.LOCKED)
+        this.showBigText(this.$t('you lose'), this.end)
       } else if (score <= - SCORE.FIVE/2 && step === 1) {
         this.$store.dispatch(SET_FIVES, win(this.board))
-        this.end()
+        this.$store.dispatch(SET_STATUS, STATUS.LOCKED)
+        this.showBigText(this.$t('you win'), this.end)
       }
     }
     this.$store.dispatch(SET_STATUS, STATUS.READY)
   },
   components: {
     Board,
-    Dialog
+    Dialog,
+    BigText
   },
   computed: {
     statusText () {
@@ -58,9 +65,10 @@ export default {
       } else if (this.status === STATUS.PLAYING) {
         return this.$t('status.playing', {
           score: this.score,
-          step: this.step
+          step: this.step,
+          time: ((new Date() - this.startTime)/1000).toFixed(2)
         })
-      }
+      } else return this.$t('status.loading')
     },
     ...mapState({
       board: state => state.board.board,
@@ -68,11 +76,15 @@ export default {
       stepsTail: state => state.board.stepsTail,
       status: state => state.home.status,
       deep: state => state.home.deep,
+      spread: state => state.home.spread,
       version: 'version'
     })
   },
   watch: {
     deep () {
+      this.updateConfig()
+    },
+    spread () {
       this.updateConfig()
     }
   },
@@ -86,21 +98,23 @@ export default {
       this.$refs.give.open()
     },
     start (first) {
+      this.$refs.offensive.close()
+      this.$store.dispatch(SET_STATUS, STATUS.LOCKED)
       this.$store.dispatch(SET_FIRST, first)
       this.$store.dispatch(RESET_BOARD)
-      this.worker.postMessage({
-        type: "START"
-      });
-      if (first === 1) {
+      this.showBigText('START!', () => {
         this.worker.postMessage({
-          type: "BEGIN"
+          type: "START"
         });
-      }
-      this.$store.dispatch(SET_STATUS, STATUS.PLAYING)
-      this.$refs.offensive.close()
+        if (first === 1) {
+          this.worker.postMessage({
+            type: "BEGIN"
+          });
+        }
+        this.$store.dispatch(SET_STATUS, STATUS.PLAYING)
+      })
     },
     end () {
-      if (this.status !== STATUS.PLAYING) return false
       this.$store.dispatch(SET_STATUS, STATUS.READY)
     },
 
@@ -120,8 +134,22 @@ export default {
       });
     },
     give () {
-      this.end()
+      this.$store.dispatch(SET_STATUS, STATUS.LOCKED)
       this.$refs.give.close()
+      this.showBigText(this.$t('you lose'), () => {
+        this.end()
+      })
+    },
+
+    showBigText (title, callback) {
+      this.bigText = title
+      this.$refs.big.open()
+      setTimeout(() => {
+        this.$refs.big.close()
+      }, 2500)
+      setTimeout(() => {
+        callback && callback.call(this)
+      }, 3000)
     },
     _set (position, role) {
       this.$store.dispatch(ADD_CHESSMAN, {
@@ -146,6 +174,7 @@ export default {
         y: y
       })
       this.$store.dispatch(SET_STATUS, STATUS.THINKING)
+      this.startTime = + new Date()
     },
 
     canBackward () {
@@ -158,7 +187,8 @@ export default {
       this.worker.postMessage({
         type: 'CONFIG',
         config: {
-          searchDeep: this.deep
+          searchDeep: this.deep,
+          spread: this.spread
         }
       })
     }

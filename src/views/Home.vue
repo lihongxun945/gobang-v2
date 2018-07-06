@@ -28,14 +28,14 @@
           href="javascript:;"
           @click="backward"
           :class="'weui-btn weui-btn_plain-primary ' + (canBackward() ? '' : 'weui-btn_plain-disabled')"
-          >&lt;&lt;{{$t('backward')}}</a>
+          ><i class="iconfont icon-xiangzuojiantou"></i></a>
       </div>
       <div class="weui-flex__item">
         <a
           href="javascript:;"
           :class="'weui-btn weui-btn_plain-primary ' + (canForward() ? '' : 'weui-btn_plain-disabled')"
           @click="forward"
-          >{{$t('forward')}}&gt;&gt;</a>
+          ><i class="iconfont icon-xiangyoujiantou"></i></a>
       </div>
     </div>
     <Dialog
@@ -54,6 +54,7 @@
       <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" @click="give">{{$t('dialog.ok')}}</a>
       <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default" @click="$refs.give.close()">{{$t('dialog.cancel')}}</a>
     </Dialog>
+    <big-text ref="big">{{bigText}}</big-text>
   </div>
 </template>
 
@@ -78,6 +79,10 @@ h1 {
   .weui-btn {
     margin: 5px;
     height: 46px;
+  }
+  .iconfont {
+    font-size: 24px;
+    line-height: 46px;
   }
 }
 
