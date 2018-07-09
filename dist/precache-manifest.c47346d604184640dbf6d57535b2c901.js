@@ -8,15 +8,15 @@ self.__precacheManifest = [
     "url": "/img/board.5442f90f.jpg"
   },
   {
-    "revision": "6733c60ca3ed1ac2bb86",
+    "revision": "e5740f490c8fa438163b",
     "url": "/css/app.8937488c.css"
   },
   {
-    "revision": "6733c60ca3ed1ac2bb86",
+    "revision": "e5740f490c8fa438163b",
     "url": "/app.bundle.js"
   },
   {
-    "revision": "f87d0adfb98977e47d27",
+    "revision": "ce2dd55bd526f96220f7",
     "url": "/ai.bundle.js"
   }
 ];
