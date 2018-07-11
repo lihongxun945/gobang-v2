@@ -41,7 +41,7 @@ var negamax = function(deep, alpha, beta) {
     var p = candidates[i]
     board.put(p, R.com)
     var steps = [p[0], p[1]]
-    var v = r(deep-1, -beta, -alpha, R.hum, 2, steps.slice(0), 0)
+    var v = r(deep-1, -beta, -alpha, R.hum, 1, steps.slice(0), 0)
     v.score *= -1
     alpha = Math.max(alpha, v.score)
     board.remove(p)
@@ -54,8 +54,8 @@ var negamax = function(deep, alpha, beta) {
     }
   }
 
-  console.log('迭代完成,deep=' + deep)
-  console.log(candidates.map(function (d) {
+  config.debug && console.log('迭代完成,deep=' + deep)
+  config.debug && console.log(candidates.map(function (d) {
     return '['+d[0]+','+d[1]+']'
       + ',score:' + d.v.score
       + ',step:' + d.v.step
@@ -145,7 +145,7 @@ var r = function(deep, alpha, beta, role, step, steps, spread) {
     steps: steps
   }
   // 双方个下两个子之后，开启star spread 模式
-  var points = board.gen(role, step > 2, step > 2)
+  var points = board.gen(role, step > 1, step > 1)
 
   if (!points.length) return leaf
 
@@ -287,7 +287,7 @@ var deeping = function(deep) {
   config.log && console.log('当前统计：' + count + '个节点, 耗时:' + time.toFixed(2) + 's, NPS:' + Math.floor(count/ time) + 'N/S')
   board.log()
   config.log && console.log("===============统计表===============")
-  statistic.print(candidates)
+  config.debug && statistic.print(candidates)
   return result
 }
 export default deeping
