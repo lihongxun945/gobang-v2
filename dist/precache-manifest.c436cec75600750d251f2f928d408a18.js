@@ -24,11 +24,11 @@ self.__precacheManifest = [
     "url": "/img/board.5442f90f.jpg"
   },
   {
-    "revision": "2d7ae8400c775637a8bd",
+    "revision": "fe5c6fcc3e5718114063",
     "url": "/css/app.e4878da1.css"
   },
   {
-    "revision": "2d7ae8400c775637a8bd",
+    "revision": "fe5c6fcc3e5718114063",
     "url": "/app.bundle.js"
   },
   {
