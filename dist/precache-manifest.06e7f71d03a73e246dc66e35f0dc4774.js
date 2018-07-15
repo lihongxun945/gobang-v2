@@ -1,6 +1,6 @@
 self.__precacheManifest = [
   {
-    "revision": "cc6ab45e71111dff70206fd4ac79c177",
+    "revision": "e24e88e0468f54e8e2e3d3e8d72ad3fe",
     "url": "/index.html"
   },
   {
@@ -24,11 +24,11 @@ self.__precacheManifest = [
     "url": "/img/board.5442f90f.jpg"
   },
   {
-    "revision": "fe5c6fcc3e5718114063",
-    "url": "/css/app.e4878da1.css"
+    "revision": "c72b879ab0904fc704ad",
+    "url": "/css/app.9670d04d.css"
   },
   {
-    "revision": "fe5c6fcc3e5718114063",
+    "revision": "c72b879ab0904fc704ad",
     "url": "/app.bundle.js"
   },
   {
